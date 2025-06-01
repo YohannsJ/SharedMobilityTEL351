@@ -1,0 +1,51 @@
+/* src/components/CurrentDataDisplay/CurrentDataDisplay.module.css */
+.currentDataContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* *** CAMBIO PRINCIPAL: Centra los items como grupo *** */
+  align-items: flex-start;
+  padding: 10px 0;
+  gap: 30px; /* *** AÑADIDO: Espacio consistente entre los gauges *** */
+}
+
+.gaugeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 140px; /* Ajustar según necesidad */
+  /* Quitar flex: 1; si no queremos que crezcan para llenar espacio, ya que justify-content: center los agrupará */
+  /* max-width: 200px; */ /* Puede ser útil si los SVGs se vuelven muy grandes */
+}
+
+.gaugeSvg {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 8px; /* Un poco más de espacio */
+}
+.gaugeSvgThermometer {
+  width: 100%;
+  max-width: 50px;
+  height: auto;
+  margin-bottom: 8px;
+}
+.gaugeSvgBattery {
+  width: 100%;
+  max-width: 60px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.gaugeValue {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #333;
+  margin-top: 5px; /* Espacio sobre el valor si el SVG está muy pegado */
+}
+
+.gaugeLabel {
+  font-size: 0.9em; /* Ligeramente más grande */
+  color: #555; /* Un poco más oscuro */
+  margin-top: 3px;
+}

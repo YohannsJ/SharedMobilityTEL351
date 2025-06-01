@@ -1,0 +1,106 @@
+/* src/pages/DashboardPage.module.css */
+.dashboardLayout {
+  max-width: 1600px; /* Aumentar el ancho máximo para pantallas grandes */
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px; /* Reducir un poco el margen */
+  color: #2c3e50;
+  position: relative; /* Para el indicador de refresco */
+}
+
+.header h1 {
+  font-size: 2.2em; /* Ligeramente más pequeño para caber mejor */
+}
+
+.refreshIndicator, .inlineError {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 0.8em;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: #eaf2f8;
+  color: #2980b9;
+}
+.inlineError {
+  background-color: #fdedec;
+  color: #c0392b;
+  left: 10px; /* Posicionar a la izquierda */
+  right: auto;
+}
+
+
+.projectDescription {
+  background-color: #f8f9fa;
+  border-left: 5px solid #3498db;
+  margin-bottom: 30px;
+  padding: 15px 20px;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: #34495e;
+  border-radius: 0 8px 8px 0;
+}
+
+.currentDataSection,
+.mapSection,
+.chartsSection {
+  margin-bottom: 30px; /* Espaciado consistente */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07); /* Sombra más sutil */
+}
+
+.currentDataSection h2,
+.mapSection h2,
+.chartsSection h2 {
+  color: #34495e;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 1.6em; /* Ajustar tamaño de títulos de sección */
+}
+
+.message, .errorMessage {
+  text-align: center;
+  font-size: 1.2em;
+  padding: 40px;
+  min-height: 200px; /* Para que ocupe espacio mientras carga */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorMessage {
+  color: red;
+  background-color: #fff0f0;
+  border: 1px solid red;
+  border-radius: 8px;
+}
+
+/* Adaptación para pantallas más anchas */
+@media (min-width: 768px) {
+  .currentDataSection .currentDataContainer { /* Referencia al contenedor interno de CurrentDataDisplay */
+    flex-direction: row; /* Asegura que los gauges estén en fila */
+    justify-content: space-evenly; /* Mejor distribución */
+  }
+}
+
+@media (min-width: 1200px) {
+  .header h1 {
+    font-size: 2.5em;
+  }
+  .projectDescription {
+    font-size: 1em;
+  }
+  .currentDataSection h2,
+  .mapSection h2,
+  .chartsSection h2 {
+    font-size: 1.8em;
+  }
+}
