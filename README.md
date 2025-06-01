@@ -24,7 +24,7 @@ Este proyecto se enmarca como una exploración práctica de tecnologías IoT, in
 * **Gestión Segura de API Keys:** Uso de variables de entorno para almacenar las API keys de ThingSpeak.
 
 ## Estructura del Proyecto
-
+```text
 SHAREDMOBILITY/
 ├── Backend/
 │   └── thingspeak/
@@ -46,8 +46,9 @@ SHAREDMOBILITY/
 ├── .gitignore
 ├── index.html
 ├── package.json
-├── README.md                           # Este archivo
+├── README.md                           # Archivo de descripción del proyecto
 └── vite.config.js
+```
 
 ## Stack Tecnológico
 

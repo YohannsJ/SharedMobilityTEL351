@@ -29,3 +29,6 @@ dist-ssr
 # .env
 # .env.*
 # !.env.example
+
+# Por una extencion que tengo instalada que crea pdf de la documentación
+README.pdf
