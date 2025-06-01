@@ -26,9 +26,9 @@ dist-ssr
 # Local environment variables
 # Por el momento no se usa, pero es una buena práctica
 # Se ignorará por el momento para que accedan a la API ya creada
-# .env
-# .env.*
-# !.env.example
+.env
+.env.*
+!.env.example
 
 # Por una extencion que tengo instalada que crea pdf de la documentación
 README.pdf

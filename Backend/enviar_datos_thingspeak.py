@@ -1,12 +1,3 @@
-# THINGSPEAK_WRITE_API_KEY = "QAV7CN1WM6UQIGU4"  # ¡Reemplaza esto con tu Write API Key!
-# THINGSPEAK_CHANNEL_ID = "2977416"        # ¡Reemplaza esto con el ID de tu canal! (Opcional si usas la API key directamente)
-# import requests
-# import random
-# import time
-# import math
-# from datetime import datetime
-# import pytz # Para zonas horarias
-
 import requests
 import random
 import time
