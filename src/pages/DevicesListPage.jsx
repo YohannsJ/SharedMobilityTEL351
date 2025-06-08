@@ -25,39 +25,41 @@ const DevicesListPage = () => {
   );
 };
 
-// El componente DeviceRow no necesita cambios
 const DeviceRow = ({ deviceId, deviceData }) => {
-    // ... (código sin cambios)
-    const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
-    const lastTripId = Object.keys(deviceData.trips).pop();
-    const lastFeed = deviceData.trips[lastTripId]?.feeds.slice(-1)[0];
-    const lastSeen = new Date(lastFeed.created_at);
-    const isActive = (new Date() - lastSeen) < 5 * 60 * 1000;
+  // La lógica para `isActive` se simplifica porque ahora la calculamos en el procesador,
+  // pero la mantenemos para el estado general del dispositivo.
+  const isActive = !!deviceData.currentTripId;
 
-    return (
-        <div className={styles.deviceCard}>
-          <div className={styles.deviceHeader} onClick={() => setIsExpanded(!isExpanded)}>
-            <span>Dispositivo ID: <strong>{deviceId}</strong></span>
-            <span>Estado: <strong className={isActive ? styles.active : styles.inactive}>{isActive ? 'Activo' : 'Inactivo'}</strong></span>
-            <span>{isExpanded ? '▼ Ocultar viajes' : '► Mostrar viajes'}</span>
-          </div>
-          {isExpanded && (
-            <div className={styles.tripList}>
-              <h4>Viajes Realizados ({Object.keys(deviceData.trips).length})</h4>
-              <ul>
-                {Object.keys(deviceData.trips).reverse().map(tripId => (
-                  <li key={tripId}>
-                    <Link to={`/devices/${deviceId}/trips/${tripId}`}>
-                      Ver Viaje #{tripId}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+  return (
+    <div className={styles.deviceCard}>
+      <div className={styles.deviceHeader} onClick={() => setIsExpanded(!isExpanded)}>
+        <span>Dispositivo ID: <strong>{deviceId}</strong></span>
+        <span>Estado: <strong className={isActive ? styles.active : styles.inactive}>{isActive ? 'Activo' : 'Inactivo'}</strong></span>
+        <span>{isExpanded ? '▼ Ocultar viajes' : '► Mostrar viajes'}</span>
+      </div>
+      {isExpanded && (
+        <div className={styles.tripList}>
+          <h4>Viajes Realizados ({Object.keys(deviceData.trips).length})</h4>
+          <ul>
+            {Object.keys(deviceData.trips).reverse().map(tripId => {
+              // --- NUEVA LÓGICA ---
+              const isCurrent = tripId === deviceData.currentTripId;
+              return (
+                <li key={tripId}>
+                  <Link to={`/devices/${deviceId}/trips/${tripId}`}>
+                    Ver Viaje #{tripId}
+                    {isCurrent && <span className={styles.currentTripIndicator}> (Viaje Actual)</span>}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      );
+      )}
+    </div>
+  );
 };
 
 

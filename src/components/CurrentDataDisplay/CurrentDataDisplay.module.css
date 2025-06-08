@@ -40,12 +40,12 @@
 .gaugeValue {
   font-size: 1.3em;
   font-weight: bold;
-  color: #333;
+  color: #bdbdbd;
   margin-top: 5px; /* Espacio sobre el valor si el SVG está muy pegado */
 }
 
 .gaugeLabel {
   font-size: 0.9em; /* Ligeramente más grande */
-  color: #555; /* Un poco más oscuro */
+  color: #b0b0b0; /* Un poco más oscuro */
   margin-top: 3px;
 }

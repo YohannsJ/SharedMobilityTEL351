@@ -4,27 +4,30 @@ import { useParams, Link } from 'react-router-dom';
 import { useData } from '../context/DataContext';
 import MapDisplay from '../components/MapDisplay/MapDisplay';
 import ChartsContainer from '../components/Charts/ChartsContainer';
-import styles from './TripDetailPage.module.css'; // Crea este archivo CSS
+import CurrentDataDisplay from '../components/CurrentDataDisplay/CurrentDataDisplay'; // 1. Importar el componente
+import styles from './TripDetailPage.module.css';
 
 const TripDetailPage = () => {
     const { deviceId, tripId } = useParams();
     const { groupedData, isLoading, error } = useData();
 
-    // Usamos useMemo para encontrar los datos del viaje específico.
-    // Esto evita recalcular en cada render a menos que los datos cambien.
     const tripData = useMemo(() => {
         if (isLoading || error) return null;
         return groupedData[deviceId]?.trips[tripId];
     }, [groupedData, isLoading, error, deviceId, tripId]);
 
+    // --- NUEVA LÓGICA ---
+    const isCurrentTrip = useMemo(() => {
+        if (isLoading || !groupedData[deviceId]) return false;
+        return tripId === groupedData[deviceId].currentTripId;
+    }, [isLoading, groupedData, deviceId, tripId]);
+
     if (isLoading) {
         return <div className={styles.message}>Cargando datos del viaje...</div>;
     }
-
     if (error) {
         return <div className={styles.errorMessage}>Error: {error}</div>;
     }
-
     if (!tripData) {
         return (
             <div className={styles.message}>
@@ -34,9 +37,10 @@ const TripDetailPage = () => {
         );
     }
 
-    // Ahora que tenemos tripData, podemos pasar los props a los componentes hijos.
     const tripFeeds = tripData.feeds;
     const fullTrajectory = tripData.fullTrajectory;
+    // Obtenemos el último feed para pasarlo a CurrentDataDisplay
+    const lastFeedOfTrip = tripFeeds.length > 0 ? tripFeeds[tripFeeds.length - 1] : null;
 
     return (
         <div className={styles.container}>
@@ -44,6 +48,14 @@ const TripDetailPage = () => {
                 Detalle del Viaje #{tripId}
                 <span className={styles.subtitle}> (Dispositivo #{deviceId})</span>
             </h1>
+
+            {/* 2. RENDERIZADO CONDICIONAL DEL BLOQUE DE DATOS ACTUALES */}
+            {isCurrentTrip && (
+                <section className={styles.section}>
+                    <h2>Datos en Tiempo Real</h2>
+                    <CurrentDataDisplay currentData={lastFeedOfTrip} />
+                </section>
+            )}
             
             <section className={styles.section}>
                 <h2>Mapa del Recorrido</h2>

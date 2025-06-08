@@ -76,3 +76,10 @@
 .tripList a {
   font-size: 1.05rem;
 }
+
+/* Añadir al final de src/pages/DevicesListPage.module.css */
+.currentTripIndicator {
+  color: var(--active-color);
+  font-weight: bold;
+  margin-left: 8px;
+}
