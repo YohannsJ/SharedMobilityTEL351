@@ -7,6 +7,8 @@ import pytz # Para zonas horarias
 import os # Importar la librería os para acceder a variables de entorno
 from dotenv import load_dotenv # Importar la función load_dotenv
 
+#venv = thingspeak 
+
 # --- Cargar variables de entorno desde .env ---
 # Construir la ruta al archivo .env que está dos niveles arriba
 dotenv_path = os.path.join(os.path.dirname(__file__), '../.env')
@@ -15,7 +17,7 @@ load_dotenv(dotenv_path)
 # --- Configuración ThingSpeak ---
 # Acceder a la variable de entorno. Asegúrate que el nombre coincida con el de tu .env
 # Si en tu .env usaste VITE_THINGSPEAK_WRITE_API_KEY, úsalo aquí.
-THINGSPEAK_WRITE_API_KEY = os.getenv("VITE_THINGSPEAK_WRITE_API_KEY")
+THINGSPEAK_WRITE_API_KEY = os.getenv("THINGSPEAK_WRITE_API_KEY")
 # Si prefieres una variable específica para Python en tu .env, como PYTHON_THINGSPEAK_WRITE_API_KEY,
 # entonces usa: os.getenv("PYTHON_THINGSPEAK_WRITE_API_KEY")
 

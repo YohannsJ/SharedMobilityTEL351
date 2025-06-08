@@ -32,3 +32,5 @@ dist-ssr
 
 # Por una extencion que tengo instalada que crea pdf de la documentación
 README.pdf
+
+cache
