@@ -1,0 +1,76 @@
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.title {
+  color: var(--text-primary-color);
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-secondary-color);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--secondary-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterGroup label {
+  font-weight: bold;
+  color: var(--text-secondary-color);
+}
+
+.filterGroup input[type="date"],
+.filterGroup input[type="time"],
+.filterGroup select {
+  background-color: var(--primary-bg-color);
+  color: var(--text-primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background-color: var(--secondary-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.section h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--accent-color);
+}
+
+.message, .errorMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 3rem;
+}
+
+.errorMessage {
+  color: var(--inactive-color);
+}

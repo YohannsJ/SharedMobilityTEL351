@@ -1,0 +1,19 @@
+/* src/components/ThemeToggleButton.module.css */
+.toggleButton {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.toggleButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-color);
+}

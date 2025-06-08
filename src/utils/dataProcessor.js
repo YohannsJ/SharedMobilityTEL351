@@ -61,6 +61,7 @@ export const groupFeedsByDeviceAndTrip = (feeds) => {
       deviceData.currentTripId = null;
     }
   }
-
+   console.log('Datos procesados y agrupados:', grouped); // <-- AÑADE ESTA LÍNEA
+  
   return grouped;
 };

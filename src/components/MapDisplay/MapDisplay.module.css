@@ -1,0 +1,138 @@
+.mapWrapper {
+  position: relative;
+  height: 600px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+/* ... (todos los estilos anteriores) ... */
+
+/* --- NUEVO: Estilo para los marcadores de Emoji --- */
+.emojiIcon {
+  font-size: 24px;      /* Tamaño del emoji */
+  text-align: center;
+  line-height: 24px;    /* Alineación vertical */
+  background: transparent; /* Sin fondo */
+  border: none;         /* Sin borde */
+  box-shadow: none;     /* Sin sombra */
+}
+
+.mapPlaceholder {
+  height: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-bg-color);
+  color: var(--text-secondary-color);
+  font-style: italic;
+  border-radius: 8px;
+}
+.mapControls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background-color: var(--secondary-bg-color);
+  opacity: 0.9;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+}
+
+.tileSelector {
+  display: flex;
+}
+
+.tileSelector button {
+  border: none;
+  background-color: transparent;
+  color: var(--text-primary-color);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.tileSelector button:first-child { border-radius: 3px 0 0 3px; }
+.tileSelector button:last-child { border-radius: 0 3px 3px 0; }
+
+.tileSelector button.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.legend {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+  background-color: rgba(30, 30, 30, 0.85);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(5px);
+}
+
+.legend h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #555;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.legend li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.legendColorBox {
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+  border: 1px solid rgba(255,255,255,0.5);
+  flex-shrink: 0; /* Evita que el cuadro se encoja */
+}
+
+.legendTime {
+  margin-left: 8px;
+  font-style: italic;
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+/* --- ESTILO MEJORADO PARA LA LEYENDA INACTIVA --- */
+.legendItemHidden {
+  opacity: 0.5;
+  background-color: rgba(80, 80, 80, 0.3);
+}
+
+.legendItemHidden .legendColorBox {
+  filter: grayscale(80%); /* El color se verá apagado */
+}
+
+.legendItemHidden .legendTime {
+    text-decoration: line-through;
+}

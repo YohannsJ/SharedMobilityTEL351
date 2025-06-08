@@ -83,3 +83,14 @@
   font-weight: bold;
   margin-left: 8px;
 }
+/* Añadir a DevicesListPage.module.css */
+.tripItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tripDate {
+  font-size: 0.9rem;
+  color: var(--text-secondary-color);
+}

@@ -1,16 +1,28 @@
 /* src/index.css */
 
-/* Definición de variables de color para un tema oscuro y moderno */
+/* TEMA OSCURO (POR DEFECTO) */
 :root {
-  --primary-bg-color: #121212;      /* Fondo principal muy oscuro */
-  --secondary-bg-color: #1e1e1e;  /* Fondo para tarjetas y elementos */
-  --border-color: #333;           /* Color para bordes sutiles */
-  --text-primary-color: #e0e0e0;   /* Color de texto principal */
-  --text-secondary-color: #a0a0a0; /* Color de texto para detalles */
-  --accent-color: #00aaff;         /* Color de acento para links e indicadores */
-  --accent-hover-color: #0088cc;   /* Color de acento al pasar el mouse */
-  --active-color: #28a745;         /* Verde para estado "Activo" */
-  --inactive-color: #dc3545;       /* Rojo para estado "Inactivo" */
+  --primary-bg-color: #121212;
+  --secondary-bg-color: #1e1e1e;
+  --border-color: #333;
+  --text-primary-color: #e0e0e0;
+  --text-secondary-color: #a0a0a0;
+  --accent-color: #00aaff;
+  --accent-hover-color: #0088cc;
+  --active-color: #28a745;
+  --inactive-color: #dc3545;
+}
+
+/* TEMA CLARO */
+html[data-theme='light'] {
+  --primary-bg-color: #f4f4f9;
+  --secondary-bg-color: #ffffff;
+  --border-color: #ddd;
+  --text-primary-color: #121212;
+  --text-secondary-color: #555;
+  --accent-color: #007bff;
+  --accent-hover-color: #0056b3;
+  /* active e inactive pueden ser los mismos o ajustarlos */
 }
 
 body {
@@ -18,24 +30,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: var(--primary-bg-color);
   color: var(--text-primary-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Regla global para un mejor manejo de tamaños */
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-a:hover {
-  color: var(--accent-hover-color);
-  text-decoration: underline;
-}
+/* ... resto de estilos globales (a, *, etc.) ... */

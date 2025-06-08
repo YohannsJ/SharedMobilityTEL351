@@ -1,10 +1,11 @@
-// src/components/MapDisplay/MapDisplay.jsx
-import React, { useEffect, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
+import React, { useEffect, useMemo, useState } from 'react';
+import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet';
+
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { useTheme } from '../../context/ThemeContext';
+import styles from './MapDisplay.module.css';
 
-// Arreglo para el icono por defecto de Leaflet
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
@@ -16,88 +17,142 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Componente para centrar el mapa en la ubicación actual
-const MapFlyTo = ({ center, zoom = 15 }) => {
-  const map = useMap();
-  useEffect(() => {
-    if (center && center.lat && center.lng) {
-      map.flyTo([center.lat, center.lng], zoom);
-    }
-  }, [center, zoom, map]);
-  return null;
-}
 
-// --- INICIO DE LA CORRECCIÓN ---
+const startIcon = new L.DivIcon({
+  html: '📍',
+  className: styles.emojiIcon,
+  iconSize: [100, 100],
+  iconAnchor: [50, 24], // El ancla en la parte inferior central del emoji
+});
+const endIcon = new L.DivIcon({
+  html: '🏁',
+  className: styles.emojiIcon,
+  iconSize: [24, 24],
+  iconAnchor: [12, 24],
+});
 
-// 1. ACEPTAMOS 'historicalPath' CON UN VALOR POR DEFECTO DE ARRAY VACÍO
-const MapDisplay = ({ feeds, historicalPath = [] }) => {
-  if ((!feeds || feeds.length === 0) && historicalPath.length === 0) {
-    return <div style={{ height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Cargando mapa y ubicaciones...</div>;
-  }
-
-  // Obtenemos la posición actual desde los feeds (útil para el marcador)
-  const currentPosition = useMemo(() => {
-    if (!feeds || feeds.length === 0) return null;
-    const lastFeed = feeds[feeds.length - 1];
-    const lat = parseFloat(lastFeed.field3);
-    const lon = parseFloat(lastFeed.field4);
-    if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
-      return [lat, lon];
-    }
+const MapBoundsFitter = ({ bounds }) => {
+    const map = useMap();
+    useEffect(() => {
+      if (bounds && bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+      }
+    }, [bounds, map]);
     return null;
-  }, [feeds]);
+};
 
-  // Si no hay una ruta histórica, calculamos una a partir de los feeds (comportamiento antiguo)
-  const fallbackLocations = useMemo(() => {
-    if (historicalPath.length > 0) return []; // No calcular si ya tenemos la ruta buena
-    return feeds
-      .map(feed => {
-        const lat = parseFloat(feed.field3);
-        const lon = parseFloat(feed.field4);
-        if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
-          return [lat, lon];
-        }
-        return null;
-      })
-      .filter(loc => loc !== null);
-  }, [feeds, historicalPath]);
+const tileLayers = {
+  dark: { url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", attribution: '&copy; OpenStreetMap & CartoDB' },
+  light: { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: '&copy; OpenStreetMap contributors' },
+  satellite: { url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", attribution: '&copy; Esri & community' },
+};
 
+const tripColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFA1', '#FFC300', '#C70039', '#FF8C00', '#00CED1'];
+const getColorForTrip = (index) => tripColors[index % tripColors.length];
 
-  // El centro del mapa será la posición actual o el inicio de la ruta histórica
-  const getInitialCenter = () => {
-      if (currentPosition) return { lat: currentPosition[0], lng: currentPosition[1] };
-      if (historicalPath.length > 0) return { lat: historicalPath[0][0], lng: historicalPath[0][1] };
-      return { lat: -33.437, lng: -70.634 }; // Posición por defecto
-  }
-  const initialCenter = getInitialCenter();
+const MapDisplay = ({ trips = [], visibleTrips = {}, onLegendToggle = () => {} }) => {
+  const { theme } = useTheme();
+  const [activeTileLayer, setActiveTileLayer] = useState(theme);
+
+  useEffect(() => {
+    setActiveTileLayer(theme);
+  }, [theme]);
+  
+  const mapData = useMemo(() => {
+    return trips.map((trip, index) => {
+      const tripIdentifier = `${trip.feeds[0]?.field7}-${trip.feeds[0]?.field8}`;
+      return {
+        id: tripIdentifier,
+        path: trip.fullTrajectory,
+        color: getColorForTrip(index),
+        legendLabel: `Dev #${trip.feeds[0]?.field7} / Viaje #${trip.feeds[0]?.field8}`,
+        startTime: trip.feeds.length > 0 ? new Date(trip.feeds[0].created_at) : null,
+      };
+    });
+  }, [trips]);
+
+  const mapBounds = useMemo(() => {
+    let bounds = L.latLngBounds();
+    mapData.forEach(item => {
+      if (visibleTrips[item.id] && item.path && item.path.length > 0) {
+        bounds.extend(item.path);
+      }
+    });
+    return bounds.isValid() ? bounds : null;
+  }, [mapData, visibleTrips]);
+
+  const initialCenter = { lat: -33.437, lng: -70.634 };
 
   return (
-    <div style={{ height: '500px', width: '100%', marginBottom: '20px' }}>
+    <div className={styles.mapWrapper}>
       <MapContainer center={initialCenter} zoom={13} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &amp; Esri, etc.'
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          url={tileLayers[activeTileLayer].url}
+          attribution={tileLayers[activeTileLayer].attribution}
+          key={activeTileLayer}
         />
-        {currentPosition && (
-          <Marker position={currentPosition}>
-            <Popup>Última Ubicación Reportada</Popup>
-          </Marker>
-        )}
+        {mapData.map((trip, index) => (
+          visibleTrips[trip.id] && trip.path && trip.path.length > 0 && 
+            <Polyline 
+              key={index} 
+              pathOptions={{ color: trip.color, weight: 4 }} 
+              positions={trip.path} 
+            />
+        ))}
+        {mapData.map((trip) => {
+          const isVisible = visibleTrips ? visibleTrips[trip.id] : true;
+          // Solo renderizamos si es visible y la ruta tiene coordenadas
+          if (isVisible && trip.path && trip.path.length > 0) {
+            return (
+              // Usamos React.Fragment para agrupar la ruta y sus marcadores
+              <React.Fragment key={trip.id}>
+                <Polyline pathOptions={{ color: trip.color, weight: 4 }} positions={trip.path} />
+                
+                {/* --- NUEVO: Marcador de Inicio --- */}
+                <Marker position={trip.path[0]} icon={startIcon}>
+                  <Popup>Inicio: {trip.legendLabel}</Popup>
+                </Marker>
 
-        {/* 2. LÓGICA DE RENDERIZADO CONDICIONAL */}
-        {/* Si tenemos la ruta histórica detallada, la dibujamos en rojo */}
-        {historicalPath.length > 1 && (
-          <Polyline pathOptions={{ color: 'red', weight: 4 }} positions={historicalPath} />
-        )}
-        
-        {/* Si NO tenemos ruta histórica, usamos la de respaldo (línea verde que une puntos) */}
-        {historicalPath.length === 0 && fallbackLocations.length > 1 && (
-          <Polyline pathOptions={{ color: 'lime', weight: 3, dashArray: '5, 10' }} positions={fallbackLocations} />
-        )}
-        
-        {/* El componente para centrar el mapa sigue funcionando igual */}
-        {initialCenter.lat !== -33.437 && <MapFlyTo center={initialCenter} zoom={16} />}
+                {/* --- NUEVO: Marcador de Fin --- */}
+                {trip.path.length > 1 && (
+                  <Marker position={trip.path[trip.path.length - 1]} icon={endIcon}>
+                     <Popup>Fin: {trip.legendLabel}</Popup>
+                  </Marker>
+                )}
+              </React.Fragment>
+            );
+          }
+          return null;
+        })}
+        {mapBounds && <MapBoundsFitter bounds={mapBounds} />}
+      
+      
       </MapContainer>
+      <div className={styles.mapControls}>
+        <div className={styles.tileSelector}>
+            <button onClick={() => setActiveTileLayer('light')} className={activeTileLayer === 'light' ? styles.active : ''}>Claro</button>
+            <button onClick={() => setActiveTileLayer('dark')} className={activeTileLayer === 'dark' ? styles.active : ''}>Oscuro</button>
+            <button onClick={() => setActiveTileLayer('satellite')} className={activeTileLayer === 'satellite' ? styles.active : ''}>Satélite</button>
+        </div>
+      </div>
+      {mapData.length > 0 && (
+        <div className={styles.legend}>
+          <h4>Leyenda de Viajes</h4>
+          <ul>
+            {mapData.map((trip, index) => (
+              <li 
+                key={index} 
+                onClick={() => onLegendToggle(trip.id)} 
+                className={!visibleTrips[trip.id] ? styles.legendItemHidden : ''}
+              >
+                <span className={styles.legendColorBox} style={{ backgroundColor: trip.color }}></span>
+                {trip.legendLabel}
+                {trip.startTime && <span className={styles.legendTime}>({trip.startTime.toLocaleTimeString()})</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

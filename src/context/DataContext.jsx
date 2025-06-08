@@ -3,48 +3,68 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from '
 import { getAllFeeds } from '../services/thingSpeakService';
 import { groupFeedsByDeviceAndTrip } from '../utils/dataProcessor';
 
-// 1. Crear el Contexto
 const DataContext = createContext(null);
 
-// 2. Crear el Componente "Proveedor" que contendrá la lógica
 export const DataProvider = ({ children }) => {
   const [groupedData, setGroupedData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Para la carga inicial
+  const [isRefreshing, setIsRefreshing] = useState(false); // Para actualizaciones en segundo plano
   const [error, setError] = useState(null);
 
+  // useEffect ahora tiene un array de dependencias vacío, lo que garantiza
+  // que se ejecute solo una vez para configurar todo.
   useEffect(() => {
-    // Esta función se ejecutará solo una vez cuando la app cargue
-    const processData = async () => {
-      try {
+    const fetchAndProcessData = async (isInitialLoad = false) => {
+      // Diferenciar entre la carga inicial (pantalla completa) y un refresco (indicador sutil)
+      if (isInitialLoad) {
         setIsLoading(true);
-        setError(null);
+      } else {
+        setIsRefreshing(true);
+      }
+      
+      try {
         const allFeedsResponse = await getAllFeeds();
-        if (allFeedsResponse.feeds.length === 0) {
-            throw new Error("No se recibieron datos desde ThingSpeak.");
+        // Es crucial comprobar que la respuesta y el array 'feeds' existen
+        if (allFeedsResponse && allFeedsResponse.feeds) {
+          const data = groupFeedsByDeviceAndTrip(allFeedsResponse.feeds);
+          setGroupedData(data);
+          setError(null); // Limpiar errores anteriores si la petición tiene éxito
+        } else {
+          // Esto puede pasar si la API devuelve un error o un formato inesperado
+          throw new Error("La respuesta de ThingSpeak no contiene un array 'feeds' válido.");
         }
-        const data = groupFeedsByDeviceAndTrip(allFeedsResponse.feeds);
-        setGroupedData(data);
       } catch (err) {
         setError(err.message);
         console.error("Error en DataProvider:", err);
       } finally {
-        setIsLoading(false);
+        // Asegurarse de desactivar los indicadores de carga
+        if (isInitialLoad) {
+          setIsLoading(false);
+        }
+        setIsRefreshing(false);
       }
     };
-    processData();
-  }, []); // El array vacío asegura que se ejecute solo al montar el componente
 
-  // 3. Usamos useMemo para evitar re-renders innecesarios en los componentes hijos
+    // 1. Ejecutar inmediatamente para la carga inicial
+    fetchAndProcessData(true);
+
+    // 2. Configurar el intervalo para refrescar cada 60 segundos
+    const intervalId = setInterval(() => fetchAndProcessData(false), 60000);
+
+    // 3. Limpiar el intervalo cuando el componente se desmonte (muy importante)
+    return () => clearInterval(intervalId);
+  }, []); // El array vacío [] es la clave aquí
+
   const value = useMemo(() => ({
     groupedData,
     isLoading,
+    isRefreshing,
     error,
-  }), [groupedData, isLoading, error]);
+  }), [groupedData, isLoading, isRefreshing, error]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
-// 4. (Opcional pero recomendado) Crear un hook personalizado para consumir el contexto fácilmente
 export const useData = () => {
   const context = useContext(DataContext);
   if (context === undefined) {

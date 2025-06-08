@@ -7,15 +7,17 @@ import LandingPage from './pages/LandingPage';
 import DevicesListPage from './pages/DevicesListPage';
 import TripDetailPage from './pages/TripDetailPage'; // Página para ver un viaje específico
 import './index.css';
+import DailySummaryPage from './pages/DailySummaryPage'; // <-- Importar la nueva página
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, // App actuará como layout principal con la Navbar
+    element: <App />,
     children: [
-      { index: true, element: <LandingPage /> }, // Página de inicio
+      { index: true, element: <LandingPage /> },
       { path: 'devices', element: <DevicesListPage /> },
       { path: 'devices/:deviceId/trips/:tripId', element: <TripDetailPage /> },
+      { path: 'summary', element: <DailySummaryPage /> }, // <-- AÑADIR ESTA LÍNEA
     ],
   },
 ]);
