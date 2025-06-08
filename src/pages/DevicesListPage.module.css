@@ -1,0 +1,78 @@
+/* src/pages/DevicesListPage.module.css */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.deviceCard {
+  background-color: var(--secondary-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden; /* Para que el borde redondeado afecte a los hijos */
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.deviceCard:hover {
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+}
+
+.deviceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  user-select: none; /* Evita que el texto se seleccione al hacer clic */
+  background-color: rgba(255, 255, 255, 0.03); /* Un sutil resaltado */
+}
+
+.deviceHeader:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.deviceHeader span {
+  font-size: 1.1rem;
+}
+
+.active {
+  color: var(--active-color);
+  font-weight: bold;
+}
+
+.inactive {
+  color: var(--inactive-color);
+  font-weight: bold;
+}
+
+.tripList {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--primary-bg-color); /* Un fondo ligeramente más oscuro */
+}
+
+.tripList h4 {
+  margin-top: 0;
+  color: var(--text-secondary-color);
+}
+
+.tripList ul {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.tripList li {
+  padding: 0.5rem 0;
+}
+
+.tripList a {
+  font-size: 1.05rem;
+}

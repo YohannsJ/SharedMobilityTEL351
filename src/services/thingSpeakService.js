@@ -12,6 +12,22 @@ if (!CHANNEL_ID || !READ_API_KEY) {
   console.error("Error: Las variables de entorno de ThingSpeak no están definidas. Asegúrate de tener un archivo .env con VITE_THINGSPEAK_CHANNEL_ID y VITE_THINGSPEAK_READ_API_KEY.");
 }
 
+
+// Nueva función para obtener todo el historial (hasta 8000 puntos)
+export const getAllFeeds = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/feeds.json?api_key=${READ_API_KEY}&results=8000`);
+    if (!response.ok) throw new Error('Error en la respuesta de la red');
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener todos los feeds:", error);
+    return { feeds: [] }; // Devuelve un objeto vacío en caso de error
+  }
+};
+
+// ... las funciones antiguas (getLastFeed, getFeedsLastDay) aún pueden ser útiles.
+
+
 /**
  * Obtiene los datos de las últimas 24 horas.
  * ThingSpeak devuelve datos en UTC.

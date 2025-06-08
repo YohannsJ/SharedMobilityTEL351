@@ -1,0 +1,41 @@
+/* src/pages/TripDetailPage.module.css */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.title {
+    color: var(--text-primary-color);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--text-secondary-color);
+    font-weight: 400;
+}
+
+.section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--secondary-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+}
+
+.message, .errorMessage {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 3rem;
+}
+
+.errorMessage {
+    color: var(--inactive-color);
+}

@@ -1,0 +1,59 @@
+/* src/App.module.css */
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--secondary-bg-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navBrand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-primary-color);
+}
+.navBrand:hover {
+  text-decoration: none;
+  color: var(--accent-color);
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navLink {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-secondary-color);
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover {
+  color: var(--text-primary-color);
+  text-decoration: none;
+}
+
+/* Estilo para el link activo, si usas NavLink de react-router-dom */
+.navLink.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+
+.content {
+  padding: 2rem;
+  flex-grow: 1;
+}
