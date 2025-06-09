@@ -8,6 +8,7 @@ import DevicesListPage from './pages/DevicesListPage';
 import TripDetailPage from './pages/TripDetailPage'; // Página para ver un viaje específico
 import './index.css';
 import DailySummaryPage from './pages/DailySummaryPage'; // <-- Importar la nueva página
+import NotFoundPage from './pages/404'; // Página para manejar 404
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: 'devices', element: <DevicesListPage /> },
       { path: 'devices/:deviceId/trips/:tripId', element: <TripDetailPage /> },
       { path: 'summary', element: <DailySummaryPage /> }, // <-- AÑADIR ESTA LÍNEA
+      { path: '*', element: <NotFoundPage /> }, // Ruta para manejar 404
     ],
   },
 ]);
@@ -25,5 +27,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
+{/* <Link path="/*" element={<NotFoundPage />} /> */}
+    
   </React.StrictMode>
 );

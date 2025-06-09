@@ -19,6 +19,10 @@ const AppLayout = () => {
           <Link to="/devices" className={styles.navLink}>Dispositivos</Link>
           <Link to="/summary" className={styles.navLink}>Resumen Diario</Link>
           {isRefreshing && <div className={styles.refreshIndicator}>🔄️</div>}
+          {/* Ruta 404 */}
+          {/* <Link to="/not-found" className={styles.navLink}>404</Link>	 */}
+          
+
         </div>
         <ThemeToggleButton />
       </nav>
