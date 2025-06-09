@@ -6,7 +6,8 @@ const Speedometer = ({ speed, maxSpeed = 60 / 3.6 }) => { // maxSpeed en m/s (ej
   const speedPercentage = Math.min(100, Math.max(0, (speed / maxSpeed) * 100));
   // Ángulo para la aguja: -90 grados es 0, 90 grados es máximo. Rango de 180 grados.
   const angle = -90 + (speedPercentage / 100) * 180;
-
+ // Speed en kilometros por hora (km/h) para el display
+  const speedKmH = speed * 3.6; // Convertir m/s a km/h
   return (
     <div className={styles.gaugeContainer}>
       <svg viewBox="0 0 100 60" className={styles.gaugeSvg}>
@@ -24,7 +25,7 @@ const Speedometer = ({ speed, maxSpeed = 60 / 3.6 }) => { // maxSpeed en m/s (ej
         />
         <circle cx="50" cy="50" r="3" fill="black" />
       </svg>
-      <div className={styles.gaugeValue}>{speed !== null ? speed.toFixed(1) : 'N/A'} m/s</div>
+      <div className={styles.gaugeValue}>{speed !== null ? speedKmH.toFixed(1) : 'N/A'} KmH</div>
       <div className={styles.gaugeLabel}>Velocidad</div>
     </div>
   );
