@@ -7,7 +7,18 @@ Este proyecto demuestra el desarrollo de una plataforma IoT enfocada en el monit
 La plataforma incluye un backend simulador en Python que envía datos a ThingSpeak y un frontend en React para visualizar estos datos, incluyendo la ubicación actual en un mapa, el rastro del recorrido y gráficos históricos del comportamiento de los sensores.
 
 Este proyecto se enmarca como una exploración práctica de tecnologías IoT, inspirado en la creciente adopción de la micromovilidad en entornos urbanos en Chile y la necesidad de sistemas robustos para su gestión. [cite: 11, 13]
+## Proximas Etapas
 
+- [ ] Implementar un sistema de notificaciones para alertar sobre eventos críticos (batería baja, ubicación fuera de rango, etc.).
+- [ ] Integrar un sistema de autenticación y autorización para usuarios y administradores.
+- [ ] Desarrollar una API RESTful para permitir la integración con otras aplicaciones y servicios.
+- [ ] Desarrollar un modelo de velocidades en la trayectoria a la hora de visualizar el mapa para mejorar la experiencia del usuario.
+- [ ] Implementar un sistema de análisis predictivo para anticipar necesidades de mantenimiento y optimizar la distribución de vehículos.
+- [ ] Implementar un sistema de gestión de usuarios y roles para controlar el acceso a diferentes funcionalidades del sistema.
+- [ ] Desarrollar distintas localidades y puntos de estacionamiento para simular un entorno urbano más complejo.
+- [ ] Implementar un sistema de semaforos virtuales para simular el comportamiento de los vehículos en un entorno urbano.
+- [ ] Implementar un sistema de gasto de bateria según el terreno (cuestas, pavimento, etc.) para simular un entorno urbano más realista.
+- [ ] Implementar un sistema de cambios de bateria
 ## Características Principales
 
 * **Simulación de Datos de Sensores:** Un script de Python genera datos realistas para:
