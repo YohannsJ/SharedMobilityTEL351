@@ -60,12 +60,13 @@ const MapDisplay = ({ trips = [], visibleTrips = {}, onLegendToggle = () => {} }
   
   const mapData = useMemo(() => {
     return trips.map((trip, index) => {
-      const tripIdentifier = `${trip.feeds[0]?.field7}-${trip.feeds[0]?.field8}`;
+      const tripIdentifier = `${trip.feeds[0]?.field2}-${trip.feeds[0]?.field1}`;
       return {
         id: tripIdentifier,
         path: trip.fullTrajectory,
         color: getColorForTrip(index),
-        legendLabel: `Dev #${trip.feeds[0]?.field7} / Viaje #${trip.feeds[0]?.field8}`,
+        legendLabel: `Dev #${trip.feeds[0]?.field2} / Viaje #${trip.feeds[0]?.field1}`,
+        // legendLabel: `Dev #${trip.feeds[0]?.field7} / Viaje #${trip.feeds[0]?.field8}`,
         startTime: trip.feeds.length > 0 ? new Date(trip.feeds[0].created_at) : null,
       };
     });

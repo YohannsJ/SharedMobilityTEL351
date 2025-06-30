@@ -25,7 +25,7 @@ const Speedometer = ({ speed, maxSpeed = 60 / 3.6 }) => { // maxSpeed en m/s (ej
         />
         <circle cx="50" cy="50" r="3" fill="black" />
       </svg>
-      <div className={styles.gaugeValue}>{speed !== null ? speedKmH.toFixed(1) : 'N/A'} KmH</div>
+      <div className={styles.gaugeValue}>{speed !== null ? speed.toFixed(1) : 'N/A'} v/s^2</div>
       <div className={styles.gaugeLabel}>Velocidad</div>
     </div>
   );

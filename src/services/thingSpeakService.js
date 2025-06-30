@@ -1,10 +1,14 @@
 // src/services/thingSpeakService.js
 import axios from 'axios';
 
-const CHANNEL_ID = import.meta.env.VITE_THINGSPEAK_CHANNEL_ID;
-const READ_API_KEY = import.meta.env.VITE_THINGSPEAK_READ_API_KEY;
+// const CHANNEL_ID = import.meta.env.VITE_THINGSPEAK_CHANNEL_ID;
+const CHANNEL_ID = "2999987";
+const READ_API_KEY = "EBL2DNK8DIV6196U";
+// const READ_API_KEY = import.meta.env.VITE_THINGSPEAK_READ_API_KEY;
 
 const BASE_URL = `https://api.thingspeak.com/channels/${CHANNEL_ID}`;
+console.log("ThingSpeak Service initialized with Channel ID:", CHANNEL_ID);
+console.log("Using Read API Key:", READ_API_KEY);
 
 
 // Verificar que las variables se cargaron (opcional, para depuración)
@@ -13,10 +17,10 @@ if (!CHANNEL_ID || !READ_API_KEY) {
 }
 
 
-// Nueva función para obtener todo el historial (hasta 8000 puntos)
+// función para obtener todo el historial (hasta 8000 puntos)
 export const getAllFeeds = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/feeds.json?api_key=${READ_API_KEY}&results=8000`);
+    const response = await fetch(`${BASE_URL}/feeds.json?api_key=${READ_API_KEY}`);
     if (!response.ok) throw new Error('Error en la respuesta de la red');
     return await response.json();
   } catch (error) {
@@ -24,8 +28,6 @@ export const getAllFeeds = async () => {
     return { feeds: [] }; // Devuelve un objeto vacío en caso de error
   }
 };
-
-// ... las funciones antiguas (getLastFeed, getFeedsLastDay) aún pueden ser útiles.
 
 
 /**

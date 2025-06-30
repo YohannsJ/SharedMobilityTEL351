@@ -1,15 +1,49 @@
 // src/utils/dataProcessor.js
 import polyline from '@mapbox/polyline';
 
+// Mi Formato de ThingSpeak:
+  // "channel": {
+  //   "id": 2977416,
+  //   "name": "Prueba SharedMovility",
+  //   "description": "Un test del proyecto de movilidad compartida",
+  //   "latitude": "0.0",
+  //   "longitude": "0.0",
+  //   "field1": "Temperatura (°C)",
+  //   "field2": "Bateria (%)",
+  //   "field3": "Latitud (°)",
+  //   "field4": "Longitud (°)",
+  //   "field5": "Velocidad (m/s)",
+  //   "field6": "Trajectory",
+  //   "field7": "Device ID",
+  //   "field8": "Viaje ID",
+  //   "created_at": "2025-06-01T15:45:33Z",
+  //   "updated_at": "2025-06-08T18:20:30Z",
+  //   "last_entry_id": 3081
+
+// Formato Rodrigo:
+  // "channel": {
+  //   "id": 2999987,
+  //   "name": "IoT_WiFi_Scooters",
+  //   "description": "Plataforma IoT para el  monitoreo de micromovilidad compartida, con conectividad WiFi.",
+  //   "latitude": "0.0",
+  //   "longitude": "0.0",
+  //   "field1": "Viaje ID",
+  //   "field2": "Scooter ID",
+  //   "field3": "GPS",   // Codificdo en Polyline (antes field6)
+  //   "field4": "Aceleración", // Se puede usar como el de velocidad (antes field5)
+//     "field5": "Nivel de batería",
 export const groupFeedsByDeviceAndTrip = (feeds) => {
   if (!feeds) return {};
 
   const fiveMinutesInMs = 5 * 60 * 1000;
 
   // Paso 1: Agrupar todos los feeds por deviceId y tripId (como antes)
+  // const grouped = feeds.reduce((acc, feed) => {
+  //   const deviceId = feed.field7;
+  //   const tripId = feed.field8;
   const grouped = feeds.reduce((acc, feed) => {
-    const deviceId = feed.field7;
-    const tripId = feed.field8;
+    const deviceId = feed.field2;
+    const tripId = feed.field1;
 
     if (!deviceId || !tripId) return acc;
 
@@ -21,8 +55,10 @@ export const groupFeedsByDeviceAndTrip = (feeds) => {
     }
 
     acc[deviceId].trips[tripId].feeds.push(feed);
-    if (feed.field6) {
-      acc[deviceId].trips[tripId].trajectories.push(feed.field6);
+    // if (feed.field6) {
+    if (feed.field3) {
+    // acc[deviceId].trips[tripId].trajectories.push(feed.field6);
+    acc[deviceId].trips[tripId].trajectories.push(feed.field3);
     }
 
     return acc;
@@ -61,7 +97,7 @@ export const groupFeedsByDeviceAndTrip = (feeds) => {
       deviceData.currentTripId = null;
     }
   }
-   console.log('Datos procesados y agrupados:', grouped); // <-- AÑADE ESTA LÍNEA
+   console.log('Datos procesados y agrupados:', grouped); 
   
   return grouped;
 };

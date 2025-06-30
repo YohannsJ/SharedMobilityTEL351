@@ -7,6 +7,7 @@ const DataContext = createContext(null);
 
 export const DataProvider = ({ children }) => {
   const [groupedData, setGroupedData] = useState({});
+  const [channelData, setChannelData] = useState({});
   const [isLoading, setIsLoading] = useState(true); // Para la carga inicial
   const [isRefreshing, setIsRefreshing] = useState(false); // Para actualizaciones en segundo plano
   const [error, setError] = useState(null);
@@ -27,7 +28,9 @@ export const DataProvider = ({ children }) => {
         // Es crucial comprobar que la respuesta y el array 'feeds' existen
         if (allFeedsResponse && allFeedsResponse.feeds) {
           const data = groupFeedsByDeviceAndTrip(allFeedsResponse.feeds);
+          // console.log(allFeedsResponse.channel)
           setGroupedData(data);
+          setChannelData(allFeedsResponse.channel || {});
           setError(null); // Limpiar errores anteriores si la petición tiene éxito
         } else {
           // Esto puede pasar si la API devuelve un error o un formato inesperado
@@ -56,11 +59,12 @@ export const DataProvider = ({ children }) => {
   }, []); // El array vacío [] es la clave aquí
 
   const value = useMemo(() => ({
+    channelData,
     groupedData,
     isLoading,
     isRefreshing,
     error,
-  }), [groupedData, isLoading, isRefreshing, error]);
+  }), [channelData, groupedData, isLoading, isRefreshing, error]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };

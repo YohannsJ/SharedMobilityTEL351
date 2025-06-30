@@ -12,9 +12,12 @@ const ChartsContainer = ({ trips = [] }) => {
     const allFeeds = trips.flatMap(trip => 
       trip.feeds.map(feed => ({
         time: new Date(feed.created_at).getTime(),
-        tripId: `viaje_${trip.feeds[0].field8}`,
-        battery: parseFloat(feed.field2),
-        speed: parseFloat(feed.field5),
+        tripId: `viaje_${trip.feeds[0].field1}`, //
+        battery: parseFloat(feed.field5),
+        speed: parseFloat(feed.field4),
+        // tripId: `viaje_${trip.feeds[0].field8}`, //
+        // battery: parseFloat(feed.field2),
+        // speed: parseFloat(feed.field5),
       }))
     );
     
@@ -38,7 +41,7 @@ const ChartsContainer = ({ trips = [] }) => {
   return (
     <div className={styles.chartsGrid}>
       <div className={styles.chartWrapper}>
-        <h3 className={styles.chartTitle}>Batería de Viajes</h3>
+        <h3 className={styles.chartTitle}>Batería del Viaje</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={unifiedChartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -50,8 +53,8 @@ const ChartsContainer = ({ trips = [] }) => {
               <Line 
                 key={`bat_${trip.feeds[0].field8}`}
                 type="monotone" 
-                dataKey={`viaje_${trip.feeds[0].field8}_battery`}
-                name={`Bat. Viaje #${trip.feeds[0].field8}`} 
+                dataKey={`viaje_${trip.feeds[0].field1}_battery`}
+                name={`Bat. Viaje #${trip.feeds[0].field1}`} 
                 stroke={getColorForTrip(index)} 
                 dot={false}
                 connectNulls
@@ -62,20 +65,20 @@ const ChartsContainer = ({ trips = [] }) => {
       </div>
       
       <div className={styles.chartWrapper}>
-        <h3 className={styles.chartTitle}>Velocidad de Viajes</h3>
+        <h3 className={styles.chartTitle}>Aceleración del Viaje</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={unifiedChartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="time" tickFormatter={(time) => new Date(time).toLocaleTimeString()} type="number" domain={['dataMin', 'dataMax']} />
-            <YAxis unit=" m/s" />
-            <Tooltip labelFormatter={(label) => new Date(label).toLocaleString()} formatter={(value) => [`${value.toFixed(1)} m/s`, 'Velocidad']} />
+            <YAxis unit=" Km/h" />
+            <Tooltip labelFormatter={(label) => new Date(label).toLocaleString()} formatter={(value) => [`${value.toFixed(1)} m/s^2`, 'Aceleración']} />
             <Legend />
             {trips.map((trip, index) => (
               <Line 
-                key={`spd_${trip.feeds[0].field8}`}
+                key={`spd_${trip.feeds[0].field4}`}
                 type="monotone" 
-                dataKey={`viaje_${trip.feeds[0].field8}_speed`}
-                name={`Vel. Viaje #${trip.feeds[0].field8}`} 
+                dataKey={`viaje_${trip.feeds[0].field1}_speed`}
+                name={`Vel. Viaje #${trip.feeds[0].field1}`} 
                 stroke={getColorForTrip(index)} 
                 dot={false}
                 connectNulls

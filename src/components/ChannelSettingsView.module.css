@@ -1,0 +1,44 @@
+.settingsContainer {
+  /* background: #f9f9f9; */
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.settingsContainer h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.formGroup input[type="text"],
+.formGroup textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #eaeaea;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.inlineInput {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
